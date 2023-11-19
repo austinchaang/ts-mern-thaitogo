@@ -1,0 +1,107 @@
+{
+  "hash": "487451cd",
+  "browserHash": "ed7942b4",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "bdef6c43",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "598dbcc9",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "67c3ac33",
+      "needsInterop": false
+    },
+    "react-helmet-async": {
+      "src": "../../node_modules/react-helmet-async/lib/index.module.js",
+      "file": "react-helmet-async.js",
+      "fileHash": "5896c825",
+      "needsInterop": false
+    },
+    "@tanstack/react-query": {
+      "src": "../../node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "3f51c134",
+      "needsInterop": false
+    },
+    "@tanstack/react-query-devtools": {
+      "src": "../../node_modules/@tanstack/react-query-devtools/build/modern/index.js",
+      "file": "@tanstack_react-query-devtools.js",
+      "fileHash": "40c7b8a9",
+      "needsInterop": false
+    },
+    "react-bootstrap": {
+      "src": "../../node_modules/react-bootstrap/esm/index.js",
+      "file": "react-bootstrap.js",
+      "fileHash": "04bb09d2",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/index.js",
+      "file": "react-router.js",
+      "fileHash": "63da26eb",
+      "needsInterop": false
+    },
+    "react-bootstrap/Spinner": {
+      "src": "../../node_modules/react-bootstrap/esm/Spinner.js",
+      "file": "react-bootstrap_Spinner.js",
+      "fileHash": "ec593efb",
+      "needsInterop": false
+    },
+    "react-bootstrap/Alert": {
+      "src": "../../node_modules/react-bootstrap/esm/Alert.js",
+      "file": "react-bootstrap_Alert.js",
+      "fileHash": "9772965f",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "ffc1fbeb",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "VZTWBJH5-NK7YRCIJ": {
+      "file": "VZTWBJH5-NK7YRCIJ.js"
+    },
+    "chunk-2BF3WH45": {
+      "file": "chunk-2BF3WH45.js"
+    },
+    "chunk-42HNEJ3T": {
+      "file": "chunk-42HNEJ3T.js"
+    },
+    "chunk-FP5Y6Y4W": {
+      "file": "chunk-FP5Y6Y4W.js"
+    },
+    "chunk-H62F4EQ7": {
+      "file": "chunk-H62F4EQ7.js"
+    },
+    "chunk-66GNZTA4": {
+      "file": "chunk-66GNZTA4.js"
+    },
+    "chunk-ZVSVQ6MR": {
+      "file": "chunk-ZVSVQ6MR.js"
+    },
+    "chunk-EXLZORJN": {
+      "file": "chunk-EXLZORJN.js"
+    },
+    "chunk-5EMIPQBR": {
+      "file": "chunk-5EMIPQBR.js"
+    },
+    "chunk-VJU3K2M7": {
+      "file": "chunk-VJU3K2M7.js"
+    },
+    "chunk-QY3AG7D4": {
+      "file": "chunk-QY3AG7D4.js"
+    }
+  }
+}

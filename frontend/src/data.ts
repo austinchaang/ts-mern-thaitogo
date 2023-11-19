@@ -36,6 +36,6 @@ export const sampleProducts: Product[] = [
     brand: 'Chad Thai',
     rating: 5,
     numReviews: 20,
-    description: '',
+    description: 'Traditional Thai Iced Thai',
   },
 ]

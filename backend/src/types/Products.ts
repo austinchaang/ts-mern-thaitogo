@@ -1,12 +1,12 @@
 export type Product = {
   name: string
   slug: string
-  category: string
   image: string
+  category: string
+  brand: string
   price: number
   countInStock: number
-  brand: string
+  description: string
   rating: number
   numReviews: number
-  description: string
 }

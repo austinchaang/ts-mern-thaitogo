@@ -1,1 +1,1 @@
-# ts-mern-chadthai
+# Typescript MERN Chad Thai Restaurant Application
