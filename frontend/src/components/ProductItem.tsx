@@ -29,9 +29,13 @@ function ProductItem({ product }: { product: Product }) {
   }
 
   return (
-    <Card>
+    <Card className="d-flex justify-content-center align-items-center">
       <Link to={`/product/${product.slug}`}>
-        <img src={product.image} className="card-img-top" alt={product.name} />
+        <img
+          src={product.image}
+          className="card-img-top product-image rounded mt-3"
+          alt={product.name}
+        />
       </Link>
       <Card.Body>
         <Link to={`product/${product.slug}`}>

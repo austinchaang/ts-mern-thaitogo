@@ -40,12 +40,21 @@ function App() {
     <div className="d-flex flex-column vh-100">
       <ToastContainer position="bottom-center" limit={1} />
       <header>
-        <Navbar expand="lg">
-          <Container>
+        <Navbar
+          className="d-flex flex-column align-items-stretch p-2 pb-0 mb-3"
+          bg="dark"
+          variant="dark"
+          expand="lg"
+        >
+          <div className="d-flex justify-content-between align-items-center">
             <LinkContainer to="/">
-              <Navbar.Brand>Chad Thai</Navbar.Brand>
+              <Navbar.Brand className="h1">Chad Thai</Navbar.Brand>
             </LinkContainer>
-          </Container>
+            <Navbar.Collapse>
+              <Nav className="w-100 justify-content-end"></Nav>
+            </Navbar.Collapse>
+          </div>
+
           <Nav>
             <Button variant={mode} onClick={switchModeHandler}>
               <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
