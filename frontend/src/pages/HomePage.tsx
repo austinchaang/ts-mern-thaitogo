@@ -9,6 +9,20 @@ import { getError } from '../utils'
 
 export default function HomePage() {
   const { data: products, isLoading, error } = useGetProductsQuery()
+
+  // Function to group products by category
+  const groupProductsByCategory = (products) => {
+    const groupedProducts = {}
+    products.forEach((product) => {
+      const { category } = product
+      if (!groupedProducts[category]) {
+        groupedProducts[category] = []
+      }
+      groupedProducts[category].push(product)
+    })
+    return groupedProducts
+  }
+
   return isLoading ? (
     <LoadingBox />
   ) : error ? (
@@ -20,11 +34,20 @@ export default function HomePage() {
       <Helmet>
         <title>Chad Thai</title>
       </Helmet>
-      {products!.map((product) => (
-        <Col key={product.slug} sm={6} md={4} lg={3}>
-          <ProductItem product={product} />
-        </Col>
-      ))}
+      {Object.entries(groupProductsByCategory(products)).map(
+        ([category, products]) => (
+          <div key={category}>
+            <h1 className="font-weight-bold text-center">{category}</h1>
+            <Row>
+              {products.map((product) => (
+                <Col key={product.slug} sm={6} md={4} lg={3}>
+                  <ProductItem product={product} />
+                </Col>
+              ))}
+            </Row>
+          </div>
+        )
+      )}
     </Row>
   )
 }

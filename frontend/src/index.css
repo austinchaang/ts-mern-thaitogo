@@ -45,3 +45,18 @@ img.thumbnail {
   left: auto;
   right: 1px;
 }
+
+.cart-badge {
+  position: absolute;
+  color: grey;
+  font-weight: bold;
+  margin-left: 16px;
+  margin-top: -3px;
+}
+
+.custom-container {
+  margin-top: 100px;
+  @media (max-width: 990px) {
+    margin-top: 200px;
+  }
+}

@@ -32,8 +32,8 @@ const initialState: AppState = {
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
       : [],
-    paymentMethod: localStorage.getItem('shippingAddress')
-      ? localStorage.getItem('shippingAddress')!
+    paymentMethod: localStorage.getItem('paymentMethod')
+      ? localStorage.getItem('paymentMethod')!
       : 'PayPal',
   },
 }
