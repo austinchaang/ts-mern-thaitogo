@@ -1,1 +1,1 @@
-# Typescript MERN Chad Thai Restaurant Application
+# Typescript MERN Thai To Go Restaurant Application
