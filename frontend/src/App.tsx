@@ -40,7 +40,7 @@ function App() {
         >
           <Container>
             <Navbar.Brand href="/" className="h1">
-              Chad Thai
+              Thai To Go
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

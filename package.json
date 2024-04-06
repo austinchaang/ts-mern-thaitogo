@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@paypal/sdk-client": "^4.0.184"
+  }
+}

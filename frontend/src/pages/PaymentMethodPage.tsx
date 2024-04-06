@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Store } from '../Store'
 
@@ -12,8 +11,6 @@ export default function PaymentMethodPage() {
   const {
     cart: { shippingAddress, paymentMethod },
   } = state
-
-  const [selectedOption, setSelectedOption] = useState(false)
 
   const [paymentMethodName, setPaymentMethodName] = useState(
     paymentMethod || 'PayPal'
@@ -27,16 +24,10 @@ export default function PaymentMethodPage() {
 
   const handleOptionChange = (e) => {
     setPaymentMethodName(e.target.value)
-    setSelectedOption(true) // Update the selectedOption state
   }
 
   const submitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    if (!selectedOption) {
-      // If no option is selected, prevent form submission
-      toast.error('Please select a payment method')
-      return
-    }
     dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName })
     localStorage.setItem('paymentMethod', paymentMethodName)
     navigate('/placeorder')

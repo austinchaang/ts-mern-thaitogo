@@ -4,8 +4,8 @@ import {
   SCRIPT_LOADING_STATE,
   usePayPalScriptReducer,
 } from '@paypal/react-paypal-js'
-import { useContext, useEffect } from 'react'
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { Card, Col, ListGroup, Row } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -16,14 +16,11 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from '../hooks/orderHooks'
-import { Store } from '../Store'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utils'
+import '../index.css'
 
 export default function OrderPage() {
-  const { state } = useContext(Store)
-  const { userInfo } = state
-
   const params = useParams()
   const { id: orderId } = params
 
@@ -36,11 +33,11 @@ export default function OrderPage() {
 
   const { mutateAsync: payOrder, isLoading: loadingPay } = usePayOrderMutation()
 
-  const testPayHandler = async () => {
-    await payOrder({ orderId: orderId! })
-    refetch()
-    toast.success('Order is paid')
-  }
+  // const testPayHandler = async () => {
+  //   await payOrder({ orderId: orderId! })
+  //   refetch()
+  //   toast.success('Order is paid')
+  // }
 
   const [{ isPending, isRejected }, paypalDispatch] = usePayPalScriptReducer()
 
@@ -66,7 +63,7 @@ export default function OrderPage() {
   }, [paypalConfig])
 
   const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
-    style: { layout: 'vertical' },
+    style: { layout: 'horizontal', shape: 'rect', tagline: false },
     createOrder(data, actions) {
       return actions.order
         .create({
@@ -117,9 +114,9 @@ export default function OrderPage() {
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
                 <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Address: </strong> {order.shippingAddress.address},
+                <strong>Address: </strong> {order.shippingAddress.address},{' '}
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
-                ,{order.shippingAddress.country}
+                , {order.shippingAddress.country}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
@@ -219,8 +216,7 @@ export default function OrderPage() {
                         <PayPalButtons
                           {...paypalbuttonTransactionProps}
                         ></PayPalButtons>
-                        {/* remove Button when deployed */}
-                        <Button onClick={testPayHandler}>Test Pay</Button>
+                        {/* <Button onClick={testPayHandler}>Test Pay</Button> */}
                       </div>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
