@@ -21,7 +21,7 @@ export default function OrderHistoryPage() {
       {isLoading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
-        <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+        <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
       ) : (
         <table className="table">
           <thead>

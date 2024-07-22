@@ -47,6 +47,9 @@ const router = createBrowserRouter(
 
 const queryClient = new QueryClient()
 
+console.log('Initializing React application...');
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <StoreProvider>

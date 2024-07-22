@@ -31,7 +31,7 @@ export default function OrderPage() {
     refetch,
   } = useGetOrderDetailsQuery(orderId!)
 
-  const { mutateAsync: payOrder, isLoading: loadingPay } = usePayOrderMutation()
+  const { mutateAsync: payOrder, isPending: loadingPay } = usePayOrderMutation()
 
   // const testPayHandler = async () => {
   //   await payOrder({ orderId: orderId! })
@@ -98,7 +98,7 @@ export default function OrderPage() {
   return isLoading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
-    <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+    <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
   ) : !order ? (
     <MessageBox variant="danger">Order Not Found</MessageBox>
   ) : (

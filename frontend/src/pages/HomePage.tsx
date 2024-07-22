@@ -1,27 +1,31 @@
-import { Col, Row } from 'react-bootstrap'
-import { Helmet } from 'react-helmet-async'
-import LoadingBox from '../components/LoadingBox'
-import MessageBox from '../components/MessageBox'
-import ProductItem from '../components/ProductItem'
-import { useGetProductsQuery } from '../hooks/productHooks'
-import { ApiError } from '../types/ApiError'
-import { getError } from '../utils'
+import { Col, Row } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import ProductItem from '../components/ProductItem';
+import { useGetProductsQuery } from '../hooks/productHooks';
+import { ApiError } from '../types/ApiError';
+import { getError } from '../utils';
+import { Product } from '../types/Products';
 
 export default function HomePage() {
-  const { data: products, isLoading, error } = useGetProductsQuery()
+  const { data, isLoading, error } = useGetProductsQuery();
+
+  // Ensure data is of type Product[]
+  const products = data as Product[] | undefined;
 
   // Function to group products by category
-  const groupProductsByCategory = (products) => {
-    const groupedProducts = {}
+  const groupProductsByCategory = (products: Product[]) => {
+    const groupedProducts: { [key: string]: Product[] } = {};
     products.forEach((product) => {
-      const { category } = product
+      const { category } = product;
       if (!groupedProducts[category]) {
-        groupedProducts[category] = []
+        groupedProducts[category] = [];
       }
-      groupedProducts[category].push(product)
-    })
-    return groupedProducts
-  }
+      groupedProducts[category].push(product);
+    });
+    return groupedProducts;
+  };
 
   return isLoading ? (
     <LoadingBox />
@@ -34,7 +38,7 @@ export default function HomePage() {
       <Helmet>
         <title>Chad Thai</title>
       </Helmet>
-      {Object.entries(groupProductsByCategory(products)).map(
+      {products && Object.entries(groupProductsByCategory(products)).map(
         ([category, products]) => (
           <div key={category}>
             <h1 className="font-weight-bold text-center">{category}</h1>
@@ -49,5 +53,5 @@ export default function HomePage() {
         )
       )}
     </Row>
-  )
+  );
 }
