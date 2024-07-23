@@ -1,0 +1,10 @@
+build:
+  docker:
+    web: Dockerfile
+
+release:
+  command:
+    - npm run migrate  # Optional: any migration commands if needed
+
+run:
+  web: npm start  # This should align with your Dockerfile CMD

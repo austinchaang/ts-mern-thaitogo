@@ -3,13 +3,17 @@ import asyncHandler from 'express-async-handler'
 import { Order, OrderModel } from '../models/orderModel'
 import { Product } from '../models/productModel'
 import { isAuth } from '../utils'
+import { Express } from '../types/Request';
 export const orderRouter = express.Router()
+
+type CustomRequest = Express.Request;
 
 orderRouter.get(
   '/mine',
   isAuth,
   asyncHandler(async (req: Request, res: Response) => {
-    const orders = await OrderModel.find({ user: req.user._id })
+    const customReq = req as CustomRequest; // Type assertion
+    const orders = await OrderModel.find({ user: customReq.user._id })
     res.json(orders)
   })
 )
@@ -35,6 +39,7 @@ orderRouter.post(
     if (req.body.orderItems.length === 0) {
       res.status(400).json({ message: 'Cart is empty' })
     } else {
+      const customReq = req as CustomRequest; // Type assertion
       const createdOrder = await OrderModel.create({
         orderItems: req.body.orderItems.map((x: Product) => ({
           ...x,
@@ -46,7 +51,7 @@ orderRouter.post(
         shippingPrice: req.body.shippingPrice,
         taxPrice: req.body.taxPrice,
         totalPrice: req.body.totalPrice,
-        user: req.user._id,
+        user: customReq.user._id,
       } as Order)
       res.status(201).json({ message: 'Order Created', order: createdOrder })
     }

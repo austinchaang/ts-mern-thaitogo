@@ -12,9 +12,11 @@ dotenv.config()
 
 const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://localhost/tsmernamazonadb'
+
 mongoose.set('strictQuery', true)
+
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('connected to mongodb')
   })
@@ -26,7 +28,7 @@ const app = express()
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:5173'],
+    origin: 'http://localhost',
   })
 )
 
@@ -39,7 +41,9 @@ app.use('/api/seed', seedRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/keys', keyRouter)
 
-const PORT = 4000
-app.listen(PORT, () => {
-  console.log(`server started at http://localhost:${PORT}`)
-})
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server started at http://${HOST}:${PORT}`);
+});

@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES5",
     "outDir": "./build",
     "strict": true,
     "module": "commonjs",
     "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "skipLibCheck": true
   }
 }
