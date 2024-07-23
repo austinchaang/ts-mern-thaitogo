@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

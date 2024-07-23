@@ -1,0 +1,1 @@
+web: tsnd --files src/index.ts

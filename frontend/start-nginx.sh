@@ -1,8 +1,6 @@
 #!/bin/sh
+# Replace environment variables in nginx.conf.template and create nginx.conf
+envsubst '$PORT $BACKEND_URL' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/nginx.conf
 
-if [ -f /etc/nginx/templates/nginx.conf.template ]; then
-    echo "Using envsubst to replace variables in nginx.conf"
-    envsubst '${PORT}' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/nginx.conf
-fi
-
-exec nginx -g 'daemon off;'
+# Start Nginx
+nginx -g 'daemon off;'

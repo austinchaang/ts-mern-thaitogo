@@ -35,6 +35,10 @@ COPY nginx.conf /etc/nginx/templates/nginx.conf.template
 COPY start-nginx.sh /usr/bin/start-nginx.sh
 RUN chmod +x /usr/bin/start-nginx.sh
 
+# Set environment variables
+ENV PORT=8080
+ENV BACKEND_URL=backend-ts-mern-thaitogo.herokuapp.com
+
 # Expose the port Nginx listens on
 EXPOSE 8080
 

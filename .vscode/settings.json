@@ -1,1 +1,3 @@
-{}
+{
+    "typescript.tsdk": "/Users/austin/Documents/ts-mern-thaitogo/backend/node_modules/typescript/lib",
+}
