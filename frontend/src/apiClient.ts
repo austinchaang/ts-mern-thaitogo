@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:4000/api'
-    : '/api';
+    : process.env.REACT_APP_API_URL || 'https://backend-ts-mern-thaitogo-8cadca05287e.herokuapp.com/api';
 
 const apiClient = axios.create({
   baseURL,

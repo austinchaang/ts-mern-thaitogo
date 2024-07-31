@@ -28,7 +28,7 @@ const app = express()
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost', 'https://frontend-ts-mern-thaitogo.herokuapp.com/'],
+    origin: ['http://localhost', 'https://frontend-ts-mern-thaitogo-33b1ced323a5.herokuapp.com', 'https://thaitogo.austinchang.ca'],
   })
 )
 

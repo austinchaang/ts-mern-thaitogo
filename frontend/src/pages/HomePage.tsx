@@ -36,7 +36,7 @@ export default function HomePage() {
   ) : (
     <Row>
       <Helmet>
-        <title>Chad Thai</title>
+        <title>Thai To Go</title>
       </Helmet>
       {products && Object.entries(groupProductsByCategory(products)).map(
         ([category, products]) => (
