@@ -30,4 +30,5 @@ Distributed under the MIT License. See 'LICENSE' for more information.
 
 ## Contact
 Austin Chang - [changaustinj@gmail.com](mailto:changaustinj@gmail.com)
+
 Project Link: [https://thaitogo.austinchang.ca/](https://thaitogo.austinchang.ca/)
