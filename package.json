@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "@paypal/sdk-client": "^4.0.184"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^7.2.0",
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.9"
   }
 }
