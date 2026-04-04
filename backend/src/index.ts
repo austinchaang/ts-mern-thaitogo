@@ -16,7 +16,7 @@ const MONGODB_URI =
 mongoose.set('strictQuery', true)
 
 mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI)
   .then(() => {
     console.log('connected to mongodb')
   })
