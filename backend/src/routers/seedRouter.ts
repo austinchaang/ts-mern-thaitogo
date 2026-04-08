@@ -3,11 +3,14 @@ import asyncHandler from 'express-async-handler'
 import { sampleProducts, sampleUsers } from '../data'
 import { ProductModel } from '../models/productModel'
 import { UserModel } from '../models/userModel'
+import { isAuth, isAdmin } from '../utils'
 
 export const seedRouter = express.Router()
 
 seedRouter.get(
   '/',
+  isAuth,
+  isAdmin,
   asyncHandler(async (req: Request, res: Response) => {
     try {
       console.log('Seeding started');

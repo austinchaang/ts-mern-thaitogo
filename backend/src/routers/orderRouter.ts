@@ -23,8 +23,13 @@ orderRouter.get(
   '/:id',
   isAuth,
   asyncHandler(async (req: Request, res: Response) => {
+    const customReq = req as CustomRequest
     const order = await OrderModel.findById(req.params.id)
     if (order) {
+      if (order.user?.toString() !== customReq.user._id.toString()) {
+        res.status(403).json({ message: 'Not authorized to view this order' })
+        return
+      }
       res.json(order)
     } else {
       res.status(404).json({ message: 'Order Not Found' })

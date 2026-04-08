@@ -1,0 +1,108 @@
+import request from 'supertest'
+import mongoose from 'mongoose'
+import app from '../src/app'
+
+const userAEmail = `orders_usera_${Date.now()}@example.com`
+const userBEmail = `orders_userb_${Date.now()}@example.com`
+const password = 'password123'
+
+let tokenA: string
+let tokenB: string
+let userAId: string
+let userBId: string
+let orderAId: string
+
+const sampleOrder = {
+  orderItems: [{ name: 'Pad Thai', quantity: '2', image: 0, price: 12.99 }],
+  shippingAddress: {
+    fullName: 'User A',
+    address: '123 Main St',
+    city: 'Bangkok',
+    postalCode: '10110',
+    country: 'Thailand',
+  },
+  paymentMethod: 'PayPal',
+  itemsPrice: 25.98,
+  shippingPrice: 5.0,
+  taxPrice: 2.6,
+  totalPrice: 33.58,
+}
+
+beforeAll(async () => {
+  await mongoose.connect(process.env.MONGODB_URI!)
+
+  const signupA = await request(app)
+    .post('/api/users/signup')
+    .send({ name: 'User A', email: userAEmail, password })
+  tokenA = signupA.body.token
+  userAId = signupA.body._id
+
+  const signupB = await request(app)
+    .post('/api/users/signup')
+    .send({ name: 'User B', email: userBEmail, password })
+  tokenB = signupB.body.token
+  userBId = signupB.body._id
+
+  // Create an order as user A for the ownership test
+  const orderRes = await request(app)
+    .post('/api/orders')
+    .set('Authorization', `Bearer ${tokenA}`)
+    .send(sampleOrder)
+  orderAId = orderRes.body.order._id
+}, 30000)
+
+afterAll(async () => {
+  await mongoose.connection.collection('users').deleteMany({
+    email: { $in: [userAEmail, userBEmail] },
+  })
+  await mongoose.connection.collection('orders').deleteMany({
+    user: {
+      $in: [
+        new mongoose.Types.ObjectId(userAId),
+        new mongoose.Types.ObjectId(userBId),
+      ],
+    },
+  })
+  await mongoose.connection.close()
+}, 30000)
+
+describe('GET /api/orders/mine', () => {
+  it('should return orders for authenticated user', async () => {
+    const res = await request(app)
+      .get('/api/orders/mine')
+      .set('Authorization', `Bearer ${tokenA}`)
+    expect(res.status).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
+  })
+
+  it('should reject unauthenticated requests', async () => {
+    const res = await request(app).get('/api/orders/mine')
+    expect(res.status).toBe(401)
+  })
+})
+
+describe('POST /api/orders', () => {
+  it('should create a new order for authenticated user', async () => {
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send(sampleOrder)
+    expect(res.status).toBe(201)
+    expect(res.body).toHaveProperty('order')
+    expect(res.body.order).toHaveProperty('_id')
+  })
+
+  it('should reject unauthenticated requests', async () => {
+    const res = await request(app).post('/api/orders').send(sampleOrder)
+    expect(res.status).toBe(401)
+  })
+})
+
+describe('Security - Order Ownership', () => {
+  it("should not allow user B to access user A's order", async () => {
+    const res = await request(app)
+      .get(`/api/orders/${orderAId}`)
+      .set('Authorization', `Bearer ${tokenB}`)
+    expect([401, 403]).toContain(res.status)
+  })
+})

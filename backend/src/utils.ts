@@ -17,6 +17,15 @@ export const generateToken = (user: User) => {
   )
 }
 
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  const user = (req as any).user
+  if (user?.isAdmin) {
+    next()
+  } else {
+    res.status(403).json({ message: 'Admin access required' })
+  }
+}
+
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers
   if (authorization && authorization.startsWith('Bearer ')) {
