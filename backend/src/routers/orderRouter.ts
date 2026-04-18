@@ -41,9 +41,19 @@ orderRouter.post(
   '/',
   isAuth,
   asyncHandler(async (req: Request, res: Response) => {
-    if (req.body.orderItems.length === 0) {
+    if (!req.body.orderItems || req.body.orderItems.length === 0) {
       res.status(400).json({ message: 'Cart is empty' })
-    } else {
+      return
+    }
+    if (!req.body.shippingAddress) {
+      res.status(400).json({ message: 'Shipping address is required' })
+      return
+    }
+    if (!req.body.paymentMethod) {
+      res.status(400).json({ message: 'Payment method is required' })
+      return
+    }
+    {
       const customReq = req as CustomRequest; // Type assertion
       const createdOrder = await OrderModel.create({
         orderItems: req.body.orderItems.map((x: Product) => ({

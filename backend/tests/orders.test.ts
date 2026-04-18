@@ -98,6 +98,59 @@ describe('POST /api/orders', () => {
   })
 })
 
+describe('POST /api/orders - Validation', () => {
+  it('should reject an order with an empty orderItems array', async () => {
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send({ ...sampleOrder, orderItems: [] })
+    expect(res.status).toBe(400)
+  })
+
+  it('should reject an order with missing shippingAddress', async () => {
+    const { shippingAddress: _, ...orderWithoutAddress } = sampleOrder
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send(orderWithoutAddress)
+    expect(res.status).toBe(400)
+  })
+
+  it('should reject an order with missing paymentMethod', async () => {
+    const { paymentMethod: _, ...orderWithoutPayment } = sampleOrder
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send(orderWithoutPayment)
+    expect(res.status).toBe(400)
+  })
+})
+
+describe('PUT /api/orders/:id/pay', () => {
+  it('should reject unauthenticated requests', async () => {
+    const res = await request(app).put(`/api/orders/${orderAId}/pay`)
+    expect(res.status).toBe(401)
+  })
+
+  it('should reject payment with invalid order ID', async () => {
+    const res = await request(app)
+      .put('/api/orders/000000000000000000000000/pay')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send({ id: 'PAYID-123', status: 'COMPLETED', update_time: new Date().toISOString(), email_address: 'buyer@example.com' })
+    expect([404, 500]).toContain(res.status)
+  })
+
+  it('should mark an order as paid with a valid PayPal payment result', async () => {
+    const res = await request(app)
+      .put(`/api/orders/${orderAId}/pay`)
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send({ id: 'PAYID-123', status: 'COMPLETED', update_time: new Date().toISOString(), email_address: 'buyer@example.com' })
+    expect(res.status).toBe(200)
+    expect(res.body.order.isPaid).toBe(true)
+    expect(res.body.order.paymentResult.paymentId).toBe('PAYID-123')
+  })
+})
+
 describe('Security - Order Ownership', () => {
   it("should not allow user B to access user A's order", async () => {
     const res = await request(app)
