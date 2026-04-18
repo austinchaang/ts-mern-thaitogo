@@ -1,6 +1,7 @@
 import request from 'supertest'
 import mongoose from 'mongoose'
 import app from '../src/app'
+import { OrderModel } from '../src/models/orderModel'
 
 const userAEmail = `orders_usera_${Date.now()}@example.com`
 const userBEmail = `orders_userb_${Date.now()}@example.com`
@@ -165,6 +166,21 @@ describe('GET /api/orders/:id', () => {
       .get('/api/orders/000000000000000000000000')
       .set('Authorization', `Bearer ${tokenA}`)
     expect(res.status).toBe(404)
+  })
+
+  it('should return 403 when the order does not belong to the authenticated user', async () => {
+    // Mock findById to return an order with a different (undefined) user, which:
+    // (1) triggers the ?. null branch in order.user?.toString()
+    // (2) triggers the true branch of the ownership check (undefined !== tokenA's id) → 403
+    jest.spyOn(OrderModel, 'findById').mockResolvedValueOnce({
+      _id: new mongoose.Types.ObjectId(),
+      user: undefined,
+    } as any)
+    const res = await request(app)
+      .get(`/api/orders/${orderAId}`)
+      .set('Authorization', `Bearer ${tokenA}`)
+    jest.restoreAllMocks()
+    expect(res.status).toBe(403)
   })
 })
 

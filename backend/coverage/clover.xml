@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1776544239887" clover="3.2.0">
-  <project timestamp="1776544239887" name="All files">
-    <metrics statements="230" coveredstatements="228" conditionals="62" coveredconditionals="58" methods="30" coveredmethods="30" elements="322" coveredelements="316" complexity="0" loc="230" ncloc="230" packages="3" files="11" classes="11"/>
+<coverage generated="1776546350961" clover="3.2.0">
+  <project timestamp="1776546350961" name="All files">
+    <metrics statements="230" coveredstatements="230" conditionals="62" coveredconditionals="59" methods="30" coveredmethods="30" elements="322" coveredelements="319" complexity="0" loc="230" ncloc="230" packages="3" files="11" classes="11"/>
     <package name="src">
       <metrics statements="41" coveredstatements="41" conditionals="14" coveredconditionals="11" methods="4" coveredmethods="4"/>
       <file name="app.ts" path="/Users/austin/Documents/ts-mern-thaitogo/backend/src/app.ts">
@@ -39,18 +39,18 @@
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="8" type="stmt"/>
         <line num="20" count="5" type="stmt"/>
-        <line num="21" count="4" type="stmt"/>
-        <line num="22" count="4" type="cond" truecount="5" falsecount="1"/>
-        <line num="23" count="2" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="cond" truecount="5" falsecount="1"/>
+        <line num="23" count="3" type="stmt"/>
         <line num="25" count="2" type="stmt"/>
         <line num="29" count="5" type="stmt"/>
-        <line num="30" count="22" type="stmt"/>
-        <line num="31" count="22" type="cond" truecount="4" falsecount="0"/>
-        <line num="32" count="16" type="stmt"/>
-        <line num="33" count="16" type="stmt"/>
-        <line num="34" count="16" type="stmt"/>
-        <line num="38" count="15" type="stmt"/>
-        <line num="45" count="15" type="stmt"/>
+        <line num="30" count="24" type="stmt"/>
+        <line num="31" count="24" type="cond" truecount="4" falsecount="0"/>
+        <line num="32" count="18" type="stmt"/>
+        <line num="33" count="18" type="stmt"/>
+        <line num="34" count="18" type="stmt"/>
+        <line num="38" count="17" type="stmt"/>
+        <line num="45" count="17" type="stmt"/>
         <line num="47" count="1" type="stmt"/>
         <line num="50" count="6" type="stmt"/>
       </file>
@@ -131,7 +131,7 @@
       </file>
     </package>
     <package name="src.routers">
-      <metrics statements="126" coveredstatements="124" conditionals="48" coveredconditionals="47" methods="20" coveredmethods="20"/>
+      <metrics statements="126" coveredstatements="126" conditionals="48" coveredconditionals="48" methods="20" coveredmethods="20"/>
       <file name="keyRouter.ts" path="/Users/austin/Documents/ts-mern-thaitogo/backend/src/routers/keyRouter.ts">
         <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="5" type="stmt"/>
@@ -140,7 +140,7 @@
         <line num="6" count="4" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="orderRouter.ts" path="/Users/austin/Documents/ts-mern-thaitogo/backend/src/routers/orderRouter.ts">
-        <metrics statements="45" coveredstatements="45" conditionals="19" coveredconditionals="18" methods="9" coveredmethods="9"/>
+        <metrics statements="45" coveredstatements="45" conditionals="19" coveredconditionals="19" methods="9" coveredmethods="9"/>
         <line num="1" count="5" type="stmt"/>
         <line num="2" count="5" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
@@ -152,13 +152,13 @@
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="21" count="5" type="stmt"/>
-        <line num="25" count="3" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="28" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="2" type="cond" truecount="5" falsecount="1"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="28" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="3" type="cond" truecount="6" falsecount="0"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
         <line num="35" count="1" type="stmt"/>
         <line num="40" count="5" type="stmt"/>
@@ -205,7 +205,7 @@
         <line num="22" count="4" type="stmt"/>
       </file>
       <file name="seedRouter.ts" path="/Users/austin/Documents/ts-mern-thaitogo/backend/src/routers/seedRouter.ts">
-        <metrics statements="19" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="5" type="stmt"/>
         <line num="2" count="5" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
@@ -214,17 +214,17 @@
         <line num="6" count="5" type="stmt"/>
         <line num="8" count="5" type="stmt"/>
         <line num="10" count="5" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
-        <line num="17" count="4" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
         <line num="19" count="2" type="stmt"/>
         <line num="21" count="4" type="stmt"/>
         <line num="22" count="2" type="stmt"/>
         <line num="23" count="2" type="stmt"/>
         <line num="25" count="2" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
       </file>
       <file name="userRouter.ts" path="/Users/austin/Documents/ts-mern-thaitogo/backend/src/routers/userRouter.ts">
         <metrics statements="44" coveredstatements="44" conditionals="23" coveredconditionals="23" methods="4" coveredmethods="4"/>

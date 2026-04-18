@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 import app from '../src/app'
 import { UserModel } from '../src/models/userModel'
+import { ProductModel } from '../src/models/productModel'
 
 const regularEmail = `seed_user_${Date.now()}@example.com`
 const adminEmail = `seed_admin_${Date.now()}@example.com`
@@ -58,6 +59,17 @@ describe('GET /api/seed - Access Control', () => {
       .get('/api/seed')
       .set('Authorization', `Bearer ${adminToken}`)
     expect(res.status).toBe(200)
+  })
+})
+
+describe('GET /api/seed - Error Handling', () => {
+  it('should return 500 when a database operation fails', async () => {
+    jest.spyOn(ProductModel, 'deleteMany').mockRejectedValueOnce(new Error('DB error'))
+    const res = await request(app)
+      .get('/api/seed')
+      .set('Authorization', `Bearer ${adminToken}`)
+    jest.restoreAllMocks()
+    expect(res.status).toBe(500)
   })
 })
 
