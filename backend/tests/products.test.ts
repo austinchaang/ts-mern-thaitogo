@@ -1,8 +1,10 @@
 import request from 'supertest'
 import mongoose from 'mongoose'
 import app from '../src/app'
+import { ProductModel } from '../src/models/productModel'
 
 let firstSlug: string | null = null
+let createdTestProductId: string | null = null
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGODB_URI!)
@@ -11,10 +13,29 @@ beforeAll(async () => {
   const res = await request(app).get('/api/products')
   if (Array.isArray(res.body) && res.body.length > 0) {
     firstSlug = res.body[0].slug
+  } else {
+    // No products in test DB — create one so the slug test isn't skipped
+    const testProduct = await ProductModel.create({
+      name: 'Test Product',
+      slug: `test-product-${Date.now()}`,
+      image: '/images/test.jpg',
+      brand: 'Test Brand',
+      category: 'Test',
+      description: 'A test product',
+      price: 9.99,
+      countInStock: 10,
+      rating: 0,
+      numReviews: 0,
+    })
+    firstSlug = testProduct.slug
+    createdTestProductId = testProduct._id?.toString() ?? null
   }
 }, 30000)
 
 afterAll(async () => {
+  if (createdTestProductId) {
+    await ProductModel.findByIdAndDelete(createdTestProductId)
+  }
   await mongoose.connection.close()
 }, 30000)
 
@@ -40,10 +61,6 @@ describe('GET /api/products', () => {
 
 describe('GET /api/products/slug/:slug', () => {
   it('should return a single product by valid slug', async () => {
-    if (!firstSlug) {
-      console.warn('No products in test DB — skipping valid slug test')
-      return
-    }
     const res = await request(app).get(`/api/products/slug/${firstSlug}`)
     expect(res.status).toBe(200)
     expect(res.body.slug).toBe(firstSlug)

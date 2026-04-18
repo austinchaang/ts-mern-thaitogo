@@ -151,6 +151,23 @@ describe('PUT /api/orders/:id/pay', () => {
   })
 })
 
+describe('GET /api/orders/:id', () => {
+  it('should return an order by ID for the authenticated owner', async () => {
+    const res = await request(app)
+      .get(`/api/orders/${orderAId}`)
+      .set('Authorization', `Bearer ${tokenA}`)
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('_id')
+  })
+
+  it('should return 404 for a non-existent order ID', async () => {
+    const res = await request(app)
+      .get('/api/orders/000000000000000000000000')
+      .set('Authorization', `Bearer ${tokenA}`)
+    expect(res.status).toBe(404)
+  })
+})
+
 describe('Security - Order Ownership', () => {
   it("should not allow user B to access user A's order", async () => {
     const res = await request(app)

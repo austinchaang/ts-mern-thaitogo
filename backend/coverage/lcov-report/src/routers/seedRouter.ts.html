@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.09% </span>
+                <span class="strong">90.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/21</span>
+                <span class='fraction'>19/21</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.1% </span>
+                <span class="strong">89.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/19</span>
+                <span class='fraction'>17/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -95,31 +95,31 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -140,18 +140,18 @@ seedRouter.get(
   '/',
   isAuth,
   isAdmin,
-  asyncHandler(<span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >) =&gt; {</span></span>
+  asyncHandler(async (req: Request, res: Response) =&gt; {
     try {
-<span class="cstat-no" title="statement not covered" >      console.log('Seeding started');</span>
-<span class="cstat-no" title="statement not covered" >      await ProductModel.deleteMany({})</span>
-      const <span class="cstat-no" title="statement not covered" >createdProducts = <span class="cstat-no" title="statement not covered" >await ProductModel.insertMany(sampleProducts)</span></span>
-<span class="cstat-no" title="statement not covered" >      console.log('Products seeded');</span>
+      console.log('Seeding started');
+      await ProductModel.deleteMany({})
+      const createdProducts = await ProductModel.insertMany(sampleProducts)
+      console.log('Products seeded');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await UserModel.deleteMany({})</span>
-      const <span class="cstat-no" title="statement not covered" >createdUsers = <span class="cstat-no" title="statement not covered" >await UserModel.insertMany(sampleUsers)</span></span>
-<span class="cstat-no" title="statement not covered" >      console.log('Users seeded');</span>
+      await UserModel.deleteMany({})
+      const createdUsers = await UserModel.insertMany(sampleUsers)
+      console.log('Users seeded');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      res.json({ createdProducts, createdUsers })</span>
+      res.json({ createdProducts, createdUsers })
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Seeding error:', error);</span>
 <span class="cstat-no" title="statement not covered" >      res.status(500).json({ message: 'Seeding failed', error: error });</span>
@@ -166,7 +166,7 @@ seedRouter.get(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-18T20:18:26.889Z
+                at 2026-04-18T20:30:39.831Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
