@@ -3,6 +3,19 @@ import mongoose from 'mongoose'
 import app from '../src/app'
 import { OrderModel } from '../src/models/orderModel'
 
+const mockExecute = jest.fn()
+
+jest.mock('@paypal/checkout-server-sdk', () => ({
+  core: {
+    SandboxEnvironment: jest.fn(),
+    LiveEnvironment: jest.fn(),
+    PayPalHttpClient: jest.fn().mockImplementation(() => ({ execute: mockExecute })),
+  },
+  orders: {
+    OrdersGetRequest: jest.fn(),
+  },
+}))
+
 const userAEmail = `orders_usera_${Date.now()}@example.com`
 const userBEmail = `orders_userb_${Date.now()}@example.com`
 const password = 'password123'
@@ -128,6 +141,26 @@ describe('POST /api/orders - Validation', () => {
 })
 
 describe('PUT /api/orders/:id/pay', () => {
+  const paymentBody = {
+    id: 'PAYID-123',
+    status: 'COMPLETED',
+    update_time: new Date().toISOString(),
+    email_address: 'buyer@example.com',
+  }
+
+  const successfulPaypalResponse = {
+    result: {
+      purchase_units: [{
+        payments: {
+          captures: [{
+            status: 'COMPLETED',
+            amount: { value: '33.58' }, // matches sampleOrder.totalPrice
+          }],
+        },
+      }],
+    },
+  }
+
   it('should reject unauthenticated requests', async () => {
     const res = await request(app).put(`/api/orders/${orderAId}/pay`)
     expect(res.status).toBe(401)
@@ -137,15 +170,52 @@ describe('PUT /api/orders/:id/pay', () => {
     const res = await request(app)
       .put('/api/orders/000000000000000000000000/pay')
       .set('Authorization', `Bearer ${tokenA}`)
-      .send({ id: 'PAYID-123', status: 'COMPLETED', update_time: new Date().toISOString(), email_address: 'buyer@example.com' })
-    expect([404, 500]).toContain(res.status)
+      .send(paymentBody)
+    expect(res.status).toBe(404)
   })
 
-  it('should mark an order as paid with a valid PayPal payment result', async () => {
+  it('should return 400 when PayPal capture status is not COMPLETED', async () => {
+    mockExecute.mockResolvedValueOnce({
+      result: {
+        purchase_units: [{
+          payments: {
+            captures: [{ status: 'PENDING', amount: { value: '33.58' } }],
+          },
+        }],
+      },
+    })
     const res = await request(app)
       .put(`/api/orders/${orderAId}/pay`)
       .set('Authorization', `Bearer ${tokenA}`)
-      .send({ id: 'PAYID-123', status: 'COMPLETED', update_time: new Date().toISOString(), email_address: 'buyer@example.com' })
+      .send(paymentBody)
+    expect(res.status).toBe(400)
+    expect(res.body.message).toBe('Payment verification failed')
+  })
+
+  it('should return 400 when captured amount does not match order total', async () => {
+    mockExecute.mockResolvedValueOnce({
+      result: {
+        purchase_units: [{
+          payments: {
+            captures: [{ status: 'COMPLETED', amount: { value: '1.00' } }],
+          },
+        }],
+      },
+    })
+    const res = await request(app)
+      .put(`/api/orders/${orderAId}/pay`)
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send(paymentBody)
+    expect(res.status).toBe(400)
+    expect(res.body.message).toBe('Payment verification failed')
+  })
+
+  it('should mark an order as paid when PayPal verification succeeds', async () => {
+    mockExecute.mockResolvedValueOnce(successfulPaypalResponse)
+    const res = await request(app)
+      .put(`/api/orders/${orderAId}/pay`)
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send(paymentBody)
     expect(res.status).toBe(200)
     expect(res.body.order.isPaid).toBe(true)
     expect(res.body.order.paymentResult.paymentId).toBe('PAYID-123')

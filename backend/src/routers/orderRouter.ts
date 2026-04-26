@@ -4,9 +4,22 @@ import { Order, OrderModel } from '../models/orderModel'
 import { Product } from '../models/productModel'
 import { isAuth } from '../utils'
 import { Express } from '../types/Request';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const paypal = require('@paypal/checkout-server-sdk') as Record<string, any>
+
 export const orderRouter = express.Router()
 
 type CustomRequest = Express.Request;
+
+export function getPaypalClient() {
+  const clientId = process.env.PAYPAL_CLIENT_ID || 'sb'
+  const clientSecret = process.env.PAYPAL_SECRET || ''
+  const environment =
+    process.env.NODE_ENV === 'production'
+      ? new paypal.core.LiveEnvironment(clientId, clientSecret)
+      : new paypal.core.SandboxEnvironment(clientId, clientSecret)
+  return new paypal.core.PayPalHttpClient(environment)
+}
 
 orderRouter.get(
   '/mine',
@@ -79,20 +92,36 @@ orderRouter.put(
   asyncHandler(async (req: Request, res: Response) => {
     const order = await OrderModel.findById(req.params.id).populate('user')
 
-    if (order) {
-      order.isPaid = true
-      order.paidAt = new Date(Date.now())
-      order.paymentResult = {
-        paymentId: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.email_address,
-      }
-      const updatedOrder = await order.save()
-
-      res.send({ order: updatedOrder, message: 'Order Paid Successfully' })
-    } else {
+    if (!order) {
       res.status(404).send({ message: 'Order Not Found' })
+      return
     }
+
+    const paypalClient = getPaypalClient()
+    const paypalRequest = new paypal.orders.OrdersGetRequest(req.body.id)
+    const paypalResponse = await paypalClient.execute(paypalRequest)
+    const paypalOrder = paypalResponse.result
+
+    const capture = paypalOrder?.purchase_units?.[0]?.payments?.captures?.[0]
+    const capturedAmount = parseFloat(capture?.amount?.value ?? 'NaN')
+    const expectedAmount = Math.round(order.totalPrice * 100)
+    const actualAmount = Math.round(capturedAmount * 100)
+
+    if (capture?.status !== 'COMPLETED' || actualAmount !== expectedAmount) {
+      res.status(400).json({ message: 'Payment verification failed' })
+      return
+    }
+
+    order.isPaid = true
+    order.paidAt = new Date(Date.now())
+    order.paymentResult = {
+      paymentId: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.email_address,
+    }
+    const updatedOrder = await order.save()
+
+    res.send({ order: updatedOrder, message: 'Order Paid Successfully' })
   })
 )
