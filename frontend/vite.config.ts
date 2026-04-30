@@ -9,5 +9,13 @@ export default defineConfig({
       input: './index.html'
     }
   },
-  plugins: [react()]
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      }
+    }
+  }
 });

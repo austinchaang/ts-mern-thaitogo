@@ -98,27 +98,33 @@ orderRouter.put(
     }
 
     const paypalClient = getPaypalClient()
-    const paypalRequest = new paypal.orders.OrdersGetRequest(req.body.id)
-    const paypalResponse = await paypalClient.execute(paypalRequest)
-    const paypalOrder = paypalResponse.result
+    const captureRequest = new paypal.orders.OrdersCaptureRequest(req.body.paypalOrderId)
+    captureRequest.requestBody({})
+    const captureResponse = await paypalClient.execute(captureRequest)
+    const capturedOrder = captureResponse.result
 
-    const capture = paypalOrder?.purchase_units?.[0]?.payments?.captures?.[0]
+    if (capturedOrder.status !== 'COMPLETED') {
+      res.status(400).json({ message: 'Payment verification failed' })
+      return
+    }
+
+    const capture = capturedOrder?.purchase_units?.[0]?.payments?.captures?.[0]
     const capturedAmount = parseFloat(capture?.amount?.value ?? 'NaN')
     const expectedAmount = Math.round(order.totalPrice * 100)
     const actualAmount = Math.round(capturedAmount * 100)
 
-    if (capture?.status !== 'COMPLETED' || actualAmount !== expectedAmount) {
-      res.status(400).json({ message: 'Payment verification failed' })
+    if (actualAmount !== expectedAmount) {
+      res.status(400).json({ message: 'Payment amount mismatch' })
       return
     }
 
     order.isPaid = true
     order.paidAt = new Date(Date.now())
     order.paymentResult = {
-      paymentId: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.email_address,
+      paymentId: capturedOrder.id,
+      status: capturedOrder.status,
+      update_time: capturedOrder.update_time,
+      email_address: capturedOrder.payer?.email_address ?? '',
     }
     const updatedOrder = await order.save()
 

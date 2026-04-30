@@ -1,7 +1,6 @@
 import {
   PayPalButtons,
   PayPalButtonsComponentProps,
-  SCRIPT_LOADING_STATE,
   usePayPalScriptReducer,
 } from '@paypal/react-paypal-js'
 import { useEffect } from 'react'
@@ -53,10 +52,6 @@ export default function OrderPage() {
             currency: 'CAD',
           },
         })
-        paypalDispatch({
-          type: 'setLoadingStatus',
-          value: SCRIPT_LOADING_STATE.PENDING,
-        })
       }
       loadPaypalScript()
     }
@@ -70,7 +65,7 @@ export default function OrderPage() {
           purchase_units: [
             {
               amount: {
-                value: order!.totalPrice.toString(),
+                value: order!.totalPrice.toFixed(2),
               },
             },
           ],
@@ -79,16 +74,14 @@ export default function OrderPage() {
           return orderID
         })
     },
-    onApprove(data, actions) {
-      return actions.order!.capture().then(async (details) => {
-        try {
-          await payOrder({ orderId: orderId!, ...details })
-          refetch()
-          toast.success('Order is paid successfully')
-        } catch (err) {
-          toast.error(getError(err as ApiError))
-        }
-      })
+    async onApprove(data) {
+      try {
+        await payOrder({ orderId: orderId!, paypalOrderId: data.orderID })
+        refetch()
+        toast.success('Order is paid successfully')
+      } catch (err) {
+        toast.error(getError(err as ApiError))
+      }
     },
     onError: (err) => {
       toast.error(getError(err as ApiError))

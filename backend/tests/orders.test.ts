@@ -13,6 +13,7 @@ jest.mock('@paypal/checkout-server-sdk', () => ({
   },
   orders: {
     OrdersGetRequest: jest.fn(),
+    OrdersCaptureRequest: jest.fn().mockImplementation(() => ({ requestBody: jest.fn() })),
   },
 }))
 
@@ -150,6 +151,10 @@ describe('PUT /api/orders/:id/pay', () => {
 
   const successfulPaypalResponse = {
     result: {
+      id: 'PAYID-123',
+      status: 'COMPLETED',
+      update_time: new Date().toISOString(),
+      payer: { email_address: 'buyer@example.com' },
       purchase_units: [{
         payments: {
           captures: [{
@@ -218,6 +223,9 @@ describe('PUT /api/orders/:id/pay', () => {
       .send(paymentBody)
     expect(res.status).toBe(200)
     expect(res.body.order.isPaid).toBe(true)
+    expect(res.body.order.paymentResult.paymentId).toBe('PAYID-123')
+    expect(res.body.order.paidAt).toBeTruthy()
+    expect(new Date(res.body.order.paidAt).getTime()).not.toBeNaN()
     expect(res.body.order.paymentResult.paymentId).toBe('PAYID-123')
   })
 })

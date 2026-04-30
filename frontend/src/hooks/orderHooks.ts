@@ -18,10 +18,10 @@ export const useGetPaypalClientIdQuery = () =>
 
 export const usePayOrderMutation = () =>
   useMutation({
-    mutationFn: async (details: { orderId: string }) =>
+    mutationFn: async (details: { orderId: string; paypalOrderId: string }) =>
       (
         await apiClient.put<{ message: string; order: Order }>(
-          `api/orders/${details.orderId}/pay`,
+          `orders/${details.orderId}/pay`,
           details
         )
       ).data,
