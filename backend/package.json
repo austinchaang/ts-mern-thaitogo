@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsnd --files src/index.ts",
+    "start": "node build/index.js",
     "build": "tsc",
     "test": "dotenv -e .env.test -- jest --detectOpenHandles",
     "test:watch": "jest --watch"

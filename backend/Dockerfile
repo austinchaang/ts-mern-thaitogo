@@ -29,4 +29,4 @@ RUN chmod +x /usr/src/app/docker-entrypoint.sh
 ENTRYPOINT ["sh", "/usr/src/app/docker-entrypoint.sh"]
 
 # Command to run the application
-CMD ["npm", "start"]
+CMD ["node", "build/index.js"]
