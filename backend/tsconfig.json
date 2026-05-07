@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES5",
+    "rootDir": "./src",
     "outDir": "./build",
     "strict": true,
     "module": "commonjs",
@@ -8,5 +9,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["tests", "node_modules"]
 }

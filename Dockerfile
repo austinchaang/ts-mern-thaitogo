@@ -1,2 +1,2 @@
 # Use the official MongoDB image
-FROM mongo:latest
+FROM node:18-alpine
